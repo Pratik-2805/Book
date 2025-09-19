@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: bookstore
+    env: python
+    plan: free
+    # startCommand: "gunicorn --chdir bookstore bookstore.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: bookstore.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

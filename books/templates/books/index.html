@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Review App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f7f7f7; }
+        h1 { color: #333; }
+        .container { background: #fff; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; }
+        input, button { padding: 8px; margin: 5px 0; width: 100%; }
+        .book, .review { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .token { word-break: break-all; font-size: 0.9em; color: #555; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Book Review App</h1>
+    <h2>Signup</h2>
+    <input id="signup-username" placeholder="Username">
+    <input id="signup-email" placeholder="Email">
+    <input id="signup-password" type="password" placeholder="Password">
+    <button onclick="signup()">Signup</button>
+    <div id="signup-result"></div>
+
+    <h2>Login</h2>
+    <input id="login-email" placeholder="Email">
+    <input id="login-password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <div id="login-result"></div>
+    <div id="token" class="token"></div>
+
+    <h2>Books</h2>
+    <button onclick="getBooks()">Load Books</button>
+    <div id="books"></div>
+</div>
+
+<script>
+let accessToken = '';
+
+function signup() {
+    fetch('/books/signup/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            username: document.getElementById('signup-username').value,
+            email: document.getElementById('signup-email').value,
+            password: document.getElementById('signup-password').value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('signup-result').innerText = data.message || JSON.stringify(data);
+    });
+}
+
+function login() {
+    fetch('/books/login/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            email: document.getElementById('login-email').value,
+            password: document.getElementById('login-password').value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.access) {
+            accessToken = data.access;
+            document.getElementById('token').innerText = 'Access Token: ' + accessToken;
+            document.getElementById('login-result').innerText = data.message;
+        } else {
+            document.getElementById('login-result').innerText = data.message || JSON.stringify(data);
+        }
+    });
+}
+
+function getBooks() {
+    fetch('/books/', {
+        headers: {'Authorization': 'Bearer ' + accessToken}
+    })
+    .then(res => res.json())
+    .then(data => {
+        let html = '';
+        if (Array.isArray(data)) {
+            data.forEach(book => {
+                html += `<div class="book"><b>${book.title}</b> by ${book.author}<br>Genre: ${book.genre}<br>Avg Rating: ${book.average_rating}</div>`;
+            });
+        } else {
+            html = '<div class="error">Error loading books. Are you logged in?</div>';
+        }
+        document.getElementById('books').innerHTML = html;
+    });
+}
+</script>
+</body>
+</html> 
