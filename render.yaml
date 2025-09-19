@@ -3,7 +3,10 @@ services:
     name: bookstore
     env: python
     plan: free
-    # startCommand: "gunicorn --chdir bookstore bookstore.wsgi:application"
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: "gunicorn --chdir bookstore bookstore.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
