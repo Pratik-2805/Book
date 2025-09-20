@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,6 +50,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'books',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -131,9 +136,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
 
 # Enable WhiteNoise for static files only in production
-STATICFILES_STORAGE = 'whitenoise.storage.WhiteNoiseStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -146,3 +156,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_COOKIE_AGE = 1209600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('book'),
+    'API_KEY': os.getenv('288666812355435'),
+    'API_SECRET': os.getenv('Buf6_C4zsSMUzl9s4pvJhaVWJDI'),
+}

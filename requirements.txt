@@ -12,3 +12,6 @@ tzdata==2025.2
 dj-database-url==2.1.0
 whitenoise==6.6.0
 requests==2.32.3
+cloudinary
+django-cloudinary-storage
+

@@ -6,7 +6,8 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
-    startCommand: "gunicorn --chdir bookstore bookstore.wsgi:application"
+      python manage.py migrate --noinput
+    startCommand: "gunicorn bookstore.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -16,3 +17,9 @@ services:
         generateValue: true
       - key: WEB_CONCURRENCY
         value: 4
+      - key: CLOUDINARY_CLOUD_NAME
+        value: book
+      - key: CLOUDINARY_API_KEY
+        value: 288666812355435
+      - key: CLOUDINARY_API_SECRET
+        value: Buf6_C4zsSMUzl9s4pvJhaVWJDI
