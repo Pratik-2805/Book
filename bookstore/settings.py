@@ -159,7 +159,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('book'),
-    'API_KEY': os.getenv('288666812355435'),
-    'API_SECRET': os.getenv('Buf6_C4zsSMUzl9s4pvJhaVWJDI'),
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }

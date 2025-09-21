@@ -3,11 +3,12 @@ services:
     name: bookstore
     env: python
     plan: free
-    buildCommand: |
-      pip install -r requirements.txt
-      python manage.py collectstatic --noinput
-      python manage.py migrate --noinput
-    startCommand: "gunicorn bookstore.wsgi:application"
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn bookstore.wsgi"
+    disk:
+      name: media
+      mountPath: /opt/render/project/src/media
+      sizeGB: 1
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
