@@ -3,12 +3,12 @@ services:
     name: bookstore
     env: python
     plan: free
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn bookstore.wsgi"
-    disk:
-      name: media
-      mountPath: /opt/render/project/src/media
-      sizeGB: 1
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+      python manage.py migrate --noinput
+      python manage.py sync_media
+    startCommand: "gunicorn bookstore.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -19,8 +19,8 @@ services:
       - key: WEB_CONCURRENCY
         value: 4
       - key: CLOUDINARY_CLOUD_NAME
-        value: book
+        sync: false
       - key: CLOUDINARY_API_KEY
-        value: 288666812355435
+        sync: false
       - key: CLOUDINARY_API_SECRET
-        value: Buf6_C4zsSMUzl9s4pvJhaVWJDI
+        sync: false
