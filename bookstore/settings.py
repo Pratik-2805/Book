@@ -164,11 +164,13 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'SECURE': True,
 }
 
 # Initialize Cloudinary client with provided credentials for URL generation
 cloudinary.config(
     cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
     api_key=CLOUDINARY_STORAGE.get('API_KEY'),
-    api_secret=CLOUDINARY_STORAGE.get('API_SECRET')
+    api_secret=CLOUDINARY_STORAGE.get('API_SECRET'),
+    secure=True
 )
