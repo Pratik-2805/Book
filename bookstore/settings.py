@@ -32,6 +32,9 @@ DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ['*']
 
+# Trust X-Forwarded-Proto from Render's proxy for secure URL generation
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Add render.com to allowed hosts
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
