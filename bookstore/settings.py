@@ -147,7 +147,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Guard: only include local static dir if it exists (avoids collectstatic errors)
-local_static_dir = BASE_DIR / 'static'
+local_static_dir = BASE_DIR / 'books' / 'static'
+
 if local_static_dir.exists():
     STATICFILES_DIRS = [local_static_dir]
 

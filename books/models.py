@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .manager import UserManager
+from cloudinary.models import CloudinaryField
+
 
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
@@ -21,7 +23,8 @@ class Books(models.Model):
     author = models.CharField(max_length=200)
     description = models.CharField(max_length=9999)
     price = models.IntegerField()
-    image = models.ImageField(upload_to='book_images/', blank=True, null=True)
+    # image = models.ImageField(upload_to='book_images/', blank=True, null=True)
+    image = CloudinaryField('image', blank=True, null=True)
     published_date = models.DateField(blank=True, null=True)
     genres = models.TextField(blank=True, null=True, help_text='Comma-separated list of genres')
     created_by = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True, related_name='books')
