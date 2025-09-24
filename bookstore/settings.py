@@ -146,25 +146,23 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-# Guard: only include local static dir if it exists (avoids collectstatic errors)
 local_static_dir = BASE_DIR / 'books' / 'static'
-
 if local_static_dir.exists():
     STATICFILES_DIRS = [local_static_dir]
-
 
 # Enable WhiteNoise static file storage in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Cloudinary storage for media files
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-
-# Serve media files in development
+# Serve media files in development (local only)
 if DEBUG:
-    from django.conf import settings
-    from django.conf.urls.static import static
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
+else:
+    MEDIA_URL = 'https://res.cloudinary.com/{}/'.format(os.getenv('CLOUDINARY_CLOUD_NAME'))
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -183,7 +181,6 @@ CLOUDINARY_STORAGE = {
     'SECURE': True,
 }
 
-# Initialize Cloudinary client with provided credentials for URL generation
 cloudinary.config(
     cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
     api_key=CLOUDINARY_STORAGE.get('API_KEY'),
